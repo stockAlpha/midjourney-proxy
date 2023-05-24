@@ -23,10 +23,10 @@ knife4j:
           - com.github.novicezk.midjourney.controller
 mj:
   discord:
-    guild-id: xxx
-    channel-id: xxx
-    user-token: xxx
-    bot-token: xxx
+    guild-id: 1089808992181682176
+    channel-id: 1089808992181682178
+    user-token: ${USER_TOKEN}
+    bot-token: ${BOT_TOKEN}
   task-store:
     type: in_memory
     timeout: 30d
