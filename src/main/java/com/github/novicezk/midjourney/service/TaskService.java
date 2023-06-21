@@ -1,23 +1,21 @@
 package com.github.novicezk.midjourney.service;
 
-import com.github.novicezk.midjourney.result.Message;
+import com.github.novicezk.midjourney.enums.BlendDimensions;
+import com.github.novicezk.midjourney.result.SubmitResultVO;
 import com.github.novicezk.midjourney.support.Task;
-import com.github.novicezk.midjourney.support.TaskCondition;
 import eu.maxschuster.dataurl.DataUrl;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 public interface TaskService {
 
-	Task getTask(String id);
+	SubmitResultVO submitImagine(Task task, DataUrl dataUrl);
 
-	Stream<Task> findTask(TaskCondition condition);
+	SubmitResultVO submitUpscale(Task task, String targetMessageId, String targetMessageHash, int index,  int messageFlags);
 
-	Message<String> submitImagine(Task task);
+	SubmitResultVO submitVariation(Task task, String targetMessageId, String targetMessageHash, int index, int messageFlags);
 
-	Message<String> submitUpscale(Task task, String targetMessageId, String targetMessageHash, int index);
+	SubmitResultVO submitDescribe(Task task, DataUrl dataUrl);
 
-	Message<String> submitVariation(Task task, String targetMessageId, String targetMessageHash, int index);
-
-	Message<String> submitDescribe(Task task, DataUrl dataUrl);
+	SubmitResultVO submitBlend(Task task, List<DataUrl> dataUrls, BlendDimensions dimensions);
 }

@@ -11,7 +11,9 @@ import java.time.Duration;
 @Component
 @ConfigurationProperties(prefix = "mj")
 public class ProxyProperties {
-
+	/**
+	 * task存储配置.
+	 */
 	private final TaskStore taskStore = new TaskStore();
 	/**
 	 * discord配置.
@@ -21,6 +23,10 @@ public class ProxyProperties {
 	 * 代理配置.
 	 */
 	private final ProxyConfig proxy = new ProxyConfig();
+	/**
+	 * 反代配置.
+	 */
+	private final NgDiscordConfig ngDiscord = new NgDiscordConfig();
 	/**
 	 * 任务队列配置.
 	 */
@@ -37,6 +43,10 @@ public class ProxyProperties {
 	 * 中文prompt翻译方式.
 	 */
 	private TranslateWay translateWay = TranslateWay.NULL;
+	/**
+	 * 接口密钥，为空不启用鉴权；调用接口时需要加请求头 mj-api-secret.
+	 */
+	private String apiSecret;
 	/**
 	 * 任务状态变更回调地址.
 	 */
@@ -57,17 +67,21 @@ public class ProxyProperties {
 		 */
 		private String userToken;
 		/**
+		 * 你的频道id.
+		 */
+		private String sessionId = "9c4055428e13bcbf2248a6b36084c5f3";
+		/**
+		 * 调用discord接口、连接wss时的user-agent.
+		 */
+		private String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
+		/**
+		 * 是否使用user_token连接wss，默认启用.
+		 */
+		private boolean userWss = true;
+		/**
 		 * 你的机器人token.
 		 */
 		private String botToken;
-		/**
-		 * Midjourney机器人的名称.
-		 */
-		private String mjBotName = "Midjourney Bot";
-		/**
-		 * 调用discord接口时的user-agent.
-		 */
-		private String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
 	}
 
 	@Data
@@ -109,12 +123,11 @@ public class ProxyProperties {
 	@Data
 	public static class TaskStore {
 		/**
-		 * timeout of task: default 30 days
+		 * 任务过期时间，默认30天.
 		 */
 		private Duration timeout = Duration.ofDays(30);
 		/**
-		 * default: TaskStore.IN_MEMORY
-		 * type: TaskStore.REDIS for Redis TaskStore
+		 * 任务存储方式: redis(默认)、in_memory.
 		 */
 		private Type type = Type.IN_MEMORY;
 
@@ -140,6 +153,22 @@ public class ProxyProperties {
 		 * 代理端口.
 		 */
 		private Integer port;
+	}
+
+	@Data
+	public static class NgDiscordConfig {
+		/**
+		 * https://discord.com 反代.
+		 */
+		private String server;
+		/**
+		 * https://cdn.discordapp.com 反代.
+		 */
+		private String cdn;
+		/**
+		 * wss://gateway.discord.gg 反代.
+		 */
+		private String wss;
 	}
 
 	@Data
